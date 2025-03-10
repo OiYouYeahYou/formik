@@ -5,159 +5,84 @@ import { FormiumLogo } from './FormiumLogo';
 import { siteConfig } from 'siteConfig';
 export interface FooterProps {}
 
+interface FooterLink {
+  content: string;
+  href: string;
+}
+
+const linksResources: FooterLink[] = [
+  { content: 'Docs', href: '/docs/overview' },
+  { content: 'Learn', href: '/docs/tutorial' },
+  { content: 'Guides', href: '/docs/guides/validation' },
+  { content: 'API Reference', href: '/docs/api/formik' },
+  { content: 'Blog', href: '/blog' },
+];
+const linksCommunity: FooterLink[] = [
+  { content: 'User Showcase', href: '/users' },
+  { content: 'Funding', href: 'https://opencollective.com/formik' },
+  { content: 'Community Chat', href: siteConfig.discordUrl },
+  { content: 'Project Forum', href: `${siteConfig.repoUrl}/discussions` },
+  { content: 'Releases', href: `${siteConfig.repoUrl}/releases` },
+  // This is old-hat; moving it here in case someone wants it back
+  // There was extra explicit styles that were not following convention either
+  // { content: 'Star', href: 'https://github.com/formium/formik' },
+];
+const linksAbout: FooterLink[] = [
+  {
+    content: 'Home',
+    href: 'https://formium.io?utm_source=formik-site&utm_medium=footer-link&utm_campaign=formik-website',
+  },
+  { content: 'GitHub', href: 'https://github.com/formium' },
+  { content: 'Twitter', href: 'https://twitter.com/formiumhq' },
+  {
+    content: 'Content Sales',
+    href: 'https://formium.io/contact/sales?utm_source=formik-site&utm_medium=footer-link&utm_campaign=formik-website',
+  },
+];
+
+function FooterLinks({
+  heading,
+  links,
+}: {
+  heading: string;
+  links: FooterLink[];
+}) {
+  const id = React.useId();
+
+  return (
+    <div className="mt-12 lg:mt-0">
+      <h4 className="text-sm leading-5 font-semibold tracking-wider text-gray-400 uppercase">
+        {heading}
+      </h4>
+      <ul className="mt-4">
+        {links.map(({ content, href }) => {
+          const Elem = href.startsWith('/') ? Link : ExternalLink;
+
+          return (
+            <li key={`${id}:${href}`} className="mt-4">
+              <Elem
+                href={href}
+                className="text-base leading-6 text-gray-500 hover:text-gray-900"
+              >
+                {content}
+              </Elem>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
 export const Footer: React.FC<FooterProps> = props => {
   return (
     <div className="bg-gray-50 border-t border-gray-200">
       <div className="container mx-auto py-12 lg:py-16 px-4 lg:px-0 ">
         <div className="lg:grid lg:grid-cols-3 lg:gap-8">
           <div className="lg:grid lg:grid-cols-3 gap-8 lg:col-span-2">
-            <div className="mt-12 lg:mt-0">
-              <h4 className="text-sm leading-5 font-semibold tracking-wider text-gray-400 uppercase">
-                Resources
-              </h4>
-              <ul className="mt-4">
-                <li>
-                  <Link
-                    href="/docs/overview"
-                    className="text-base leading-6 text-gray-500 hover:text-gray-900"
-                  >
-                    Docs
-                  </Link>
-                </li>
-                <li className="mt-4">
-                  <Link
-                    href="/docs/tutorial"
-                    className="text-base leading-6 text-gray-500 hover:text-gray-900"
-                  >
-                    Learn
-                  </Link>
-                </li>
-                <li className="mt-4">
-                  <Link
-                    href="/docs/guides/validation"
-                    className="text-base leading-6 text-gray-500 hover:text-gray-900"
-                  >
-                    Guides
-                  </Link>
-                </li>
-                <li className="mt-4">
-                  <Link
-                    href="/docs/api/formik"
-                    className="text-base leading-6 text-gray-500 hover:text-gray-900"
-                  >
-                    API Reference
-                  </Link>
-                </li>
-
-                <li className="mt-4">
-                  <Link
-                    href="/blog"
-                    className="text-base leading-6 text-gray-500 hover:text-gray-900"
-                  >
-                    Blog
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="mt-12 lg:mt-0">
-              <h4 className="text-sm leading-5 font-semibold tracking-wider text-gray-400 uppercase">
-                Community
-              </h4>
-              <ul className="mt-4">
-                <li>
-                  <Link
-                    href="/users"
-                    className="text-base leading-6 text-gray-500 hover:text-gray-900"
-                  >
-                    User Showcase
-                  </Link>
-                </li>
-                <li className="mt-4">
-                  <ExternalLink
-                    href="https://opencollective.com/formik"
-                    className="text-base leading-6 text-gray-500 hover:text-gray-900"
-                  >
-                    Funding
-                  </ExternalLink>
-                </li>
-                <li className="mt-4">
-                  <ExternalLink
-                    href={siteConfig.discordUrl}
-                    className="text-base leading-6 text-gray-500 hover:text-gray-900"
-                  >
-                    Community Chat
-                  </ExternalLink>
-                </li>
-                <li className="mt-4">
-                  <ExternalLink
-                    href={`${siteConfig.repoUrl}/discussions`}
-                    className="text-base leading-6 text-gray-500 hover:text-gray-900"
-                  >
-                    Project Forum
-                  </ExternalLink>
-                </li>
-                <li className="mt-4">
-                  <ExternalLink
-                    href={`${siteConfig.repoUrl}/releases`}
-                    className="text-base leading-6 text-gray-500 hover:text-gray-900"
-                  >
-                    Releases
-                  </ExternalLink>
-                </li>
-                <li className="mt-4">
-                  <ExternalLink
-                    className="github-button"
-                    href="https://github.com/formium/formik"
-                    data-color-scheme="no-preference: light; light: light; dark: dark;"
-                    data-icon="octicon-star"
-                    data-size="large"
-                    data-show-count="true"
-                    aria-label="Star formik/formik on GitHub"
-                  >
-                    Star
-                  </ExternalLink>
-                </li>
-              </ul>
-            </div>
-            <div className="mt-12 lg:mt-0">
-              <h4 className="text-sm leading-5 font-semibold tracking-wider text-gray-400 uppercase">
-                About Formium
-              </h4>
-              <ul className="mt-4">
-                <li className="mt-4">
-                  <ExternalLink
-                    href="https://formium.io?utm_source=formik-site&utm_medium=footer-link&utm_campaign=formik-website"
-                    className="text-base leading-6 text-gray-500 hover:text-gray-900"
-                  >
-                    Home
-                  </ExternalLink>
-                </li>
-                <li className="mt-4">
-                  <ExternalLink
-                    href="https://github.com/formium"
-                    className="text-base leading-6 text-gray-500 hover:text-gray-900"
-                  >
-                    GitHub
-                  </ExternalLink>
-                </li>
-                <li className="mt-4">
-                  <ExternalLink
-                    href="https://twitter.com/formiumhq"
-                    className="text-base leading-6 text-gray-500 hover:text-gray-900"
-                  >
-                    Twitter
-                  </ExternalLink>
-                </li>
-                <li className="mt-4">
-                  <ExternalLink
-                    href="https://formium.io/contact/sales?utm_source=formik-site&utm_medium=footer-link&utm_campaign=formik-website"
-                    className="text-base leading-6 text-gray-500 hover:text-gray-900"
-                  >
-                    Contact Sales
-                  </ExternalLink>
-                </li>
-              </ul>
-            </div>
+            <FooterLinks heading="Resources" links={linksResources} />
+            <FooterLinks heading="Community" links={linksCommunity} />
+            <FooterLinks heading="About Formium" links={linksAbout} />
           </div>
           <div className="mt-8 lg:mt-0">
             <h4 className="text-sm leading-5 font-semibold tracking-wider text-gray-400 uppercase">
@@ -198,7 +123,7 @@ export const Footer: React.FC<FooterProps> = props => {
               <FormiumLogo />
             </ExternalLink>
             <div className="text-gray-400 text-xs pt-1">
-              Copyright &copy; 2020 Formium, Inc. All rights reserved.{' '}
+              Copyright &copy; 2020 Formium, Inc. All rights reserved.
             </div>
           </div>
         </div>
