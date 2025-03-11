@@ -2,6 +2,7 @@ import * as React from 'react';
 import Highlight, { defaultProps } from 'prism-react-renderer';
 import { TWButton } from './TWButton';
 import { useClipboard } from './useClipboard';
+import cn from 'classnames';
 
 // Original: https://raw.githubusercontent.com/PrismJS/prism-themes/master/themes/prism-ghcolors.css
 
@@ -102,17 +103,27 @@ const Code = ({
         language={language}
         theme={theme as any}
       >
-        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        {({ style, tokens, getLineProps, getTokenProps }) => (
           <div className="relative">
             <div className="absolute top-0 right-0 p-2">
-              <TWButton size="xs" className="font-sans" onClick={onCopy}>
+              <button
+                type="button"
+                onClick={onCopy}
+                className={cn(
+                  'font-medium inline-flex items-center focus:outline-none transition duration-150 ease-in-out',
+                  'ring-1 ring-black ring-opacity-5 border border-gray-300 text-gray-700 bg-white hover:text-gray-500  focus:ring focus:ring-blue focus:border-blue-300 active:text-gray-800 active:bg-gray-50',
+                  'text-xs rounded-md leading-4 py-1.5 px-2.5',
+                  'font-sans'
+                )}
+              >
                 {hasCopied ? 'Copied!' : 'Copy'}
-              </TWButton>
+              </button>
             </div>
             <pre
-              className={
-                className + ' bg-gray-50 pb-4 pt-4 pr-4 overflow-scroll mb-4'
-              }
+              className={cn(
+                className,
+                'bg-gray-50 pb-4 pt-4 pr-4 overflow-scroll mb-4'
+              )}
               style={{
                 ...style,
                 border: '1px solid #eee',
@@ -131,7 +142,7 @@ const Code = ({
                     </span>
                   ) : (
                     <span className="w-5 mx-2" />
-                  )}{' '}
+                  )}
                   {line.map((token, key) => (
                     <span key={key} {...getTokenProps({ token, key })} />
                   ))}
