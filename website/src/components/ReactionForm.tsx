@@ -19,8 +19,9 @@ const mapIntentToSource = {
 export function FeedbackButton({ intent, ...props }: FeedbackButtonProps) {
   const ref = React.useRef<HTMLButtonElement | null>(null);
   const { buttonProps } = useButton(props, ref);
-  const { isHovered, hoverProps } = useHover({});
+  const { hoverProps } = useHover({});
   const mergedProps = mergeProps(hoverProps, buttonProps);
+
   return (
     <>
       <button
@@ -28,21 +29,11 @@ export function FeedbackButton({ intent, ...props }: FeedbackButtonProps) {
         ref={ref}
         className={cn(
           'inline-flex items-center justify-center py-2',
-          isHovered
-            ? ' none transition duration-150 scale-125   ease-in-out '
-            : ' grayed transition duration-150 scale-100  ease-in-out '
+          'transition duration-150 ease-in-out grayscale hover:grayscale-0 hover:scale-125'
         )}
       >
         <img src={mapIntentToSource[intent]} height="24" width="24" />
       </button>
-      <style jsx>{`
-        .grayed {
-          filter: grayscale(100%);
-        }
-        .none {
-          filter: none;
-        }
-      `}</style>
     </>
   );
 }
