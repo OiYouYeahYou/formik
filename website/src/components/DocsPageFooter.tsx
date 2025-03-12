@@ -45,6 +45,33 @@ function RouteNavigator({ route, direction, tag }: RouteNavigatorProps) {
   );
 }
 
+interface EditLinkProps {
+  href: string;
+  slug: string;
+  tag: string | undefined;
+  editUrl: string;
+}
+
+function EditLink({ href, slug, tag, editUrl }: EditLinkProps) {
+  if (tag) {
+    return (
+      <NextLink href={href} as={slug} className="text-gray-600 underline">
+        Go to the live version of this page
+      </NextLink>
+    );
+  }
+
+  return (
+    <a
+      href={editUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-gray-600 underline"
+    >
+      Edit this page on GitHub
+    </a>
+  );
+}
 
 export const DocsPageFooter = React.memo<DocsPageFooterProps>(
   ({ route, href, prevRoute, nextRoute }) => {
@@ -67,24 +94,7 @@ export const DocsPageFooter = React.memo<DocsPageFooterProps>(
         </div>
         <div className="flex my-2">
           <div className="md:flex-1 md:text-right">
-            {tag ? (
-              <NextLink
-                href={href}
-                as={slug}
-                className="text-gray-600 underline"
-              >
-                Go to the live version of this page
-              </NextLink>
-            ) : (
-              <a
-                href={editUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 underline"
-              >
-                Edit this page on GitHub
-              </a>
-            )}
+            <EditLink editUrl={editUrl} href={href} slug={slug} tag={tag} />
           </div>
         </div>
       </>
