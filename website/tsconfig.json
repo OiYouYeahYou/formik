@@ -18,7 +18,7 @@
     "removeComments": true,
     "strictNullChecks": true,
     "importHelpers": true,
-    "suppressImplicitAnyIndexErrors": true,
+    "downlevelIteration": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
