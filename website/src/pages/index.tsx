@@ -83,7 +83,7 @@ const Home: React.FC<HomeProps> = props => {
               />
             </div>
             <div className="lg:flex lg:max-w-md xl:max-w-xl lg:items-start lg:space-between">
-              <div className="">
+              <div>
                 <div className="text-center lg:text-left md:max-w-2xl md:mx-auto ">
                   <h1 className="text-4xl tracking-tight leading-10 font-extrabold text-gray-900 sm:leading-none sm:text-6xl lg:text-5xl xl:text-6xl">
                     Build forms in React,
@@ -99,7 +99,11 @@ const Home: React.FC<HomeProps> = props => {
                     <div className="rounded-md shadow">
                       <Link
                         href="/docs/overview"
-                        className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue transition duration-150 ease-in-out md:py-4 md:text-lg md:px-10"
+                        className="
+                          w-full flex items-center justify-center px-8 py-3 border border-transparent text-base leading-6 font-medium rounded-md
+                          focus:ring focus:ring-blue transition duration-150 ease-in-out md:py-4 md:text-lg md:px-10
+                          text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700
+                          "
                       >
                         Get Started
                       </Link>
@@ -109,7 +113,11 @@ const Home: React.FC<HomeProps> = props => {
                         href={siteConfig.repoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-blue-600 bg-white hover:text-blue-500 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue transition duration-150 ease-in-out md:py-4 md:text-lg md:px-10"
+                        className="
+                          w-full flex items-center justify-center px-8 py-3 border border-transparent text-base leading-6 font-medium rounded-md
+                          focus:ring focus:ring-blue transition duration-150 ease-in-out md:py-4 md:text-lg md:px-10
+                          text-blue-600 bg-white hover:text-blue-500 focus:outline-none focus:border-blue-300
+                          "
                       >
                         GitHub
                       </a>
@@ -125,49 +133,28 @@ const Home: React.FC<HomeProps> = props => {
           <div className="py-24  ">
             <div className="mx-auto container px-4 lg:px-0">
               <div className="lg:grid lg:grid-cols-3 lg:gap-8">
-                <div>
-                  <div>
-                    <h3 className="text-xl leading-6 xl:text-2xl font-bold text-gray-900">
-                      Declarative
-                    </h3>
-                    <p className="mt-2 lg:mt-4 text-base xl:text-lg lg:leading-normal leading-6 text-gray-600">
-                      Formik takes care of the repetitive and annoying
-                      stuff—keeping track of values/errors/visited fields,
-                      orchestrating validation, and handling submission—so you
-                      don't have to. This means you spend less time wiring up
-                      state and change handlers and more time focusing on your
-                      business logic.
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-10 lg:mt-0">
-                  <div>
-                    <h3 className="text-xl leading-6 xl:text-2xl font-bold text-gray-900">
-                      Intuitive
-                    </h3>
-                    <p className="mt-2  lg:mt-4 text-base xl:text-lg lg:leading-normal leading-6 text-gray-600">
-                      No fancy subscriptions or observables under the hood, just
-                      plain React state and props. By staying within the core
-                      React framework and away from magic, Formik makes
-                      debugging, testing, and reasoning about your forms a
-                      breeze. If you know React, and you know a bit about forms,
-                      you know Formik!
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-10 lg:mt-0">
-                  <div>
-                    <h3 className="text-xl leading-6 xl:text-2xl font-bold text-gray-900">
-                      Adoptable
-                    </h3>
-                    <p className="mt-2  lg:mt-4 text-base xl:text-lg lg:leading-normal leading-6 text-gray-600">
-                      Since form state is inherently local and ephemeral, Formik
-                      does not use external state management libraries like
-                      Redux or MobX. This also makes Formik easy to adopt
-                      incrementally and keeps bundle size to a minimum.
-                    </p>
-                  </div>
-                </div>
+                <BenefitItem title="Declarative">
+                  Formik takes care of the repetitive and annoying stuff—keeping
+                  track of values/errors/visited fields, orchestrating
+                  validation, and handling submission—so you don't have to. This
+                  means you spend less time wiring up state and change handlers
+                  and more time focusing on your business logic.
+                </BenefitItem>
+
+                <BenefitItem title="Intuitive">
+                  No fancy subscriptions or observables under the hood, just
+                  plain React state and props. By staying within the core React
+                  framework and away from magic, Formik makes debugging,
+                  testing, and reasoning about your forms a breeze. If you know
+                  React, and you know a bit about forms, you know Formik!
+                </BenefitItem>
+
+                <BenefitItem title="Adoptable">
+                  Since form state is inherently local and ephemeral, Formik
+                  does not use external state management libraries like Redux or
+                  MobX. This also makes Formik easy to adopt incrementally and
+                  keeps bundle size to a minimum.
+                </BenefitItem>
               </div>
             </div>
           </div>
@@ -227,90 +214,20 @@ const Home: React.FC<HomeProps> = props => {
             </div>
             <div>
               <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4 text-white max-w-screen-lg mx-auto text-lg">
-                <a className="mb-2">
-                  <span className="bg-blue-100 text-blue-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                    <Check />
-                  </span>
-                  Form-level Validation
-                </a>
-                <a className="mb-2">
-                  <span className="bg-blue-100 text-blue-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                    <Check />
-                  </span>
-                  Error Messages
-                </a>
-                <a className="mb-2">
-                  <span className="bg-blue-100 text-blue-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                    <Check />
-                  </span>
-                  Wizards and multi-step forms
-                </a>
-                <a className="mb-2">
-                  <span className="bg-blue-100 text-blue-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                    <Check />
-                  </span>
-                  Field-level validation
-                </a>
-                <a className="mb-2">
-                  <span className="bg-blue-100 text-blue-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                    <Check />
-                  </span>
-                  Array Fields
-                </a>
-                <a className="mb-2">
-                  <span className="bg-blue-100 text-blue-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                    <Check />
-                  </span>
-                  API Errors
-                </a>
-                <a className="mb-2">
-                  <span className="bg-blue-100 text-blue-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                    <Check />
-                  </span>
-                  Custom Validation
-                </a>
-                <a className="mb-2">
-                  <span className="bg-blue-100 text-blue-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                    <Check />
-                  </span>
-                  Internationalization (i18n)
-                </a>
-                <a className="mb-2">
-                  <span className="bg-blue-100 text-blue-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                    <Check />
-                  </span>
-                  Auto-saving forms
-                </a>
-                <a className="mb-2">
-                  <span className="bg-blue-100 text-blue-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                    <Check />
-                  </span>
-                  Dependent Validation
-                </a>
-                <a className="mb-2">
-                  <span className="bg-blue-100 text-blue-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                    <Check />
-                  </span>
-                  Conditional Logic
-                </a>
-                <a className="mb-2">
-                  <span className="bg-blue-100 text-blue-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                    <Check />
-                  </span>
-                  Dynamic Fields
-                </a>
-                <a className="mb-2">
-                  <span className="bg-blue-100 text-blue-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                    <Check />
-                  </span>
-                  React Native
-                </a>
-                <a className="mb-2">
-                  <span className="bg-blue-100 text-blue-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                    <Check />
-                  </span>
-                  Tree shakeable
-                </a>
+                <FeatureItem>Form-level Validation</FeatureItem>
+                <FeatureItem>Error Messages</FeatureItem>
+                <FeatureItem>Wizards and multi-step forms</FeatureItem>
+                <FeatureItem>Field-level validation</FeatureItem>
+                <FeatureItem>Array Fields</FeatureItem>
+                <FeatureItem>API Errors</FeatureItem>
+                <FeatureItem>Custom Validation</FeatureItem>
+                <FeatureItem>Internationalization (i18n)</FeatureItem>
+                <FeatureItem>Auto-saving forms</FeatureItem>
+                <FeatureItem>Dependent Validation</FeatureItem>
+                <FeatureItem>Conditional Logic</FeatureItem>
+                <FeatureItem>Dynamic Fields</FeatureItem>
+                <FeatureItem>React Native</FeatureItem>
+                <FeatureItem>Tree shakeable</FeatureItem>
               </div>
             </div>
           </div>
@@ -324,7 +241,11 @@ const Home: React.FC<HomeProps> = props => {
               <div className="inline-flex rounded-md shadow">
                 <Link
                   href="/docs/overview"
-                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring transition duration-150 ease-in-out"
+                  className={cn(
+                    'inline-flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md',
+                    'focus:outline-none focus:ring transition duration-150 ease-in-out',
+                    'text-white bg-blue-600 hover:bg-blue-500'
+                  )}
                 >
                   Get Started
                 </Link>
@@ -332,7 +253,11 @@ const Home: React.FC<HomeProps> = props => {
               <div className="ml-3 inline-flex rounded-md shadow">
                 <a
                   href={siteConfig.repoUrl}
-                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-blue-600 bg-white hover:text-blue-500 focus:outline-none focus:ring transition duration-150 ease-in-out"
+                  className={cn(
+                    'inline-flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md',
+                    'focus:outline-none focus:ring transition duration-150 ease-in-out',
+                    'text-blue-600 bg-white hover:text-blue-500'
+                  )}
                 >
                   GitHub
                 </a>
@@ -375,3 +300,35 @@ const Check = React.memo(() => (
     <path d="M20 6L9 17l-5-5"></path>
   </svg>
 ));
+
+function FeatureItem({ children }: { children?: React.ReactNode }) {
+  return (
+    <a className="mb-2">
+      <span className="bg-blue-100 text-blue-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
+        <Check />
+      </span>
+      {children}
+    </a>
+  );
+}
+
+function BenefitItem({
+  title,
+  children,
+}: {
+  title: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <div className="mt-10 lg:mt-0">
+      <div>
+        <h3 className="text-xl leading-6 xl:text-2xl font-bold text-gray-900">
+          {title}
+        </h3>
+        <p className="mt-2  g:mt-4 text-base xl:text-lg lg:leading-normal leading-6 text-gray-600">
+          {children}
+        </p>
+      </div>
+    </div>
+  );
+}
