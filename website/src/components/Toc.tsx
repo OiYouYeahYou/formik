@@ -1,58 +1,42 @@
 import * as React from 'react';
 import cx from 'classnames';
 import { useTocHighlight } from './useTocHighlight';
-import { Post } from 'lib/types';
 import styles from './Toc.module.css';
 
 const TOP_OFFSET = 100;
-
-function getHeaderAnchors(): Element[] {
-  return Array.prototype.filter.call(
-    document.getElementsByClassName('anchor'),
-    function (testElement) {
-      return (
-        testElement.parentNode.nodeName === 'H2' ||
-        testElement.parentNode.nodeName === 'H3'
-      );
-    }
-  );
-}
-function getHeaderDataFromAnchors(el: Element) {
-  return {
-    url: el.getAttribute('href'),
-    text: el.parentElement?.innerText,
-    depth: Number(el.parentElement?.nodeName.replace('H', '')),
-  };
-}
 
 export const Toc: React.FC<{}> = () => {
   const headings = useTocHighlight(
     styles.contents__link,
     styles['contents__link--active'],
-    TOP_OFFSET,
-    getHeaderAnchors,
-    getHeaderDataFromAnchors,
-    el => el?.parentElement?.id
+    TOP_OFFSET
   );
+
+  if (!headings?.length) {
+    return <ul className="space-y-3"></ul>;
+  }
+
   return (
     <ul className="space-y-3">
-      {headings &&
-        headings.length > 0 &&
-        headings.map((h, i) =>
-          h.url ? (
+      {headings
+        .filter(({ url }) => url)
+        .map((headingData, i) => {
+          const { url, depth, text } = headingData;
+
+          return (
             <li
-              key={`heading-${h.url}-${i}`}
+              key={`heading-${url}-${i}`}
               className={cx('text-sm ', {
-                ['pl-2']: h?.depth === 3,
-                ['hidden']: h.depth && h.depth > 3,
+                'pl-2': depth === 3,
+                hidden: depth! > 3,
               })}
             >
-              <a className={styles.contents__link} href={h.url}>
-                {h.text}
+              <a className={styles.contents__link} href={url!}>
+                {text}
               </a>
             </li>
-          ) : null
-        )}
+          );
+        })}
     </ul>
   );
 };

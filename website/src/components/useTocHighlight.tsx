@@ -5,16 +5,33 @@ interface HeadingData {
   url?: string | null;
   depth?: number;
 }
+
+/** Get all `a.anchor` tags that are immediate children of `h{2,3}` */
+function getHeaderAnchors() {
+  return document.querySelectorAll<HTMLAnchorElement>(
+    'h2 > .anchor, h3 > .anchor'
+  );
+}
+
+function getActiveHeaderAnchor(topOffset: number) {
+  for (const headerAnchor of getHeaderAnchors()) {
+    const { top } = headerAnchor.getBoundingClientRect();
+
+    if (top >= 0 && top <= topOffset) {
+      return headerAnchor;
+    }
+  }
+
+  return null;
+}
+
 /**
  * Sets up Table of Contents highlighting. It requires that
  */
 export function useTocHighlight(
   linkClassName: string,
   linkActiveClassName: string,
-  topOffset: number,
-  getHeaderAnchors: () => Element[],
-  getHeaderDataFromAnchor: (el: Element) => HeadingData,
-  getAnchorHeaderIdentifier: (el: Element) => string | undefined
+  topOffset: number
 ) {
   const [lastActiveLink, setLastActiveLink] = React.useState<
     Element | undefined
@@ -22,60 +39,49 @@ export function useTocHighlight(
   const [headings, setHeadings] = React.useState<HeadingData[]>([]);
 
   React.useEffect(() => {
-    setHeadings(getHeaderAnchors().map(getHeaderDataFromAnchor));
+    setHeadings(
+      Array.from(getHeaderAnchors(), (anchor): HeadingData => {
+        const { parentElement } = anchor;
+
+        return {
+          url: anchor.getAttribute('href'),
+          text: parentElement?.innerText,
+          depth: Number(parentElement?.nodeName.replace('H', '')),
+        };
+      })
+    );
   }, [setHeadings]);
 
   React.useEffect(() => {
-    let headersAnchors: any[] = [];
-    let links: any[] = [];
-
     function setActiveLink() {
-      function getActiveHeaderAnchor() {
-        let index = 0;
-        let activeHeaderAnchor = null;
-
-        headersAnchors = getHeaderAnchors();
-        while (index < headersAnchors.length && !activeHeaderAnchor) {
-          const headerAnchor = headersAnchors[index];
-          const { top } = headerAnchor.getBoundingClientRect();
-
-          if (top >= 0 && top <= topOffset) {
-            activeHeaderAnchor = headerAnchor;
-          }
-
-          index += 1;
-        }
-
-        return activeHeaderAnchor;
+      const activeHeaderAnchor = getActiveHeaderAnchor(topOffset);
+      const parentId = activeHeaderAnchor?.parentElement?.id;
+      // Most of the time there will be no active header returned
+      if (!parentId) {
+        return;
       }
 
-      const activeHeaderAnchor = getActiveHeaderAnchor();
+      const links = document.getElementsByClassName(
+        linkClassName
+      ) as HTMLCollectionOf<HTMLAnchorElement>;
 
-      if (activeHeaderAnchor) {
-        let index = 0;
-        let itemHighlighted = false;
+      for (const link of links) {
+        const { href } = link;
+        const anchorValue = decodeURIComponent(
+          href.substring(href.indexOf('#') + 1)
+        );
 
-        links = document.getElementsByClassName(linkClassName) as any;
-
-        while (index < links.length && !itemHighlighted) {
-          const link = links[index];
-          const { href } = link;
-          const anchorValue = decodeURIComponent(
-            href.substring(href.indexOf('#') + 1)
-          );
-
-          if (getAnchorHeaderIdentifier(activeHeaderAnchor) === anchorValue) {
-            if (lastActiveLink) {
-              lastActiveLink.classList.remove(linkActiveClassName);
-            }
-
-            link.classList.add(linkActiveClassName);
-            setLastActiveLink(link);
-            itemHighlighted = true;
-          }
-
-          index += 1;
+        if (parentId !== anchorValue) {
+          continue;
         }
+
+        if (lastActiveLink) {
+          lastActiveLink.classList.remove(linkActiveClassName);
+        }
+
+        link.classList.add(linkActiveClassName);
+        setLastActiveLink(link);
+        break;
       }
     }
 
