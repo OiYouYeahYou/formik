@@ -5,6 +5,7 @@ import { siteConfig } from 'siteConfig';
 import { addTagToSlug, getSlug, removeFromLast } from '../lib/docs/utils';
 import { RouteItem } from '../lib/types';
 import { ReactionForm } from './ReactionForm';
+import cn from 'classnames';
 
 export interface DocsPageFooterProps {
   route: RouteItem;
@@ -17,49 +18,46 @@ function areEqual(prevProps: DocsPageFooterProps, props: DocsPageFooterProps) {
   return prevProps.route?.path === props.route?.path;
 }
 
+interface RouteNavigatorProps {
+  route?: RouteItem;
+  direction: 'Previous' | 'Next';
+  tag: string | undefined;
+}
+
+function RouteNavigator({ route, direction, tag }: RouteNavigatorProps) {
+  if (!route?.path) {
+    return <div className="flex-1" />;
+  }
+
+  const { path, title } = route;
+
+  return (
+    <NextLink
+      href={addTagToSlug(removeFromLast(path, '.'), tag)}
+      className={cn(
+        'flex-1 max-w-md block border border-gray-200 p-4 rounded-lg hover:text-blue-600 duration-150 ease-out',
+        { 'text-right': direction === 'Next' }
+      )}
+    >
+      <span className="text-sm block text-gray-500 mb-1">{direction}</span>
+      <span className="text-xl block font-semibold">{title}</span>
+    </NextLink>
+  );
+}
+
+
 export const DocsPageFooter = React.memo<DocsPageFooterProps>(
   ({ route, href, prevRoute, nextRoute }) => {
     const { query } = useRouter();
     const { tag, slug } = getSlug(query as { slug: string[] });
     const editUrl = `${siteConfig.editUrl}${route?.path}`;
+
     return (
       <>
         <div className="py-12">
           <div className="space-y-8 md:flex space-between items-center md:space-y-0 md:space-x-8">
-            {prevRoute && prevRoute.path ? (
-              <NextLink
-                href={addTagToSlug(
-                  removeFromLast(prevRoute.path, '.'),
-                  tag as string
-                )}
-                className="flex-1 max-w-md block border border-gray-200 p-4 rounded-lg hover:text-blue-600 duration-150 ease-out"
-              >
-                <span className="text-sm block text-gray-500 mb-1 ">
-                  Previous
-                </span>
-                <span className="text-xl block  font-semibold">
-                  {prevRoute.title}
-                </span>
-              </NextLink>
-            ) : (
-              <div className="flex-1" />
-            )}
-            {nextRoute && nextRoute.path ? (
-              <NextLink
-                href={addTagToSlug(
-                  removeFromLast(nextRoute.path, '.'),
-                  tag as string
-                )}
-                className="flex-1 max-w-md text-right block border border-gray-200  p-4 rounded-lg hover:text-blue-600 duration-150 ease-out"
-              >
-                <span className="text-sm block text-gray-500 mb-1 ">Next</span>
-                <span className="text-xl block  font-semibold ">
-                  {nextRoute.title}
-                </span>
-              </NextLink>
-            ) : (
-              <div className="flex-1" />
-            )}
+            <RouteNavigator route={prevRoute} direction="Previous" tag={tag} />
+            <RouteNavigator route={nextRoute} direction="Next" tag={tag} />
           </div>
         </div>
         <div className="border-t border-b py-8">
